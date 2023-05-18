@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- displays site properly based on user's device -->
+  <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
+  <title>Frontend Mentor | Advice generator app</title>
+
+  <!-- Feel free to remove these styles or customise in your own stylesheet 👍 -->
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@800&display=swap');
+      *,*::after,*::before {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-width: 240px;
+        width: 100vw;
+        height: 100vh;
+        background-color: #1E2530;
+
+      }
+      
+      @media screen and (max-width: 750px) {
+        #container {
+          transform: scale(.75);
+        }
+      }
+
+      @media screen and (max-width: 370px) {
+        #container {
+          transform: scale(.45);
+        }
+      }
+
+      #container {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 30px;
+        gap: 20px;
+        width: 600px;
+        min-height: 340px;
+        font-family: 'Manrope', sans-serif;
+        background-color: #313A49;
+        color: #CED9E7;
+        border-radius: 10px;
+      }
+
+      .adviceTitle {
+        letter-spacing: 3px;
+        font-weight: lighter;
+        color: #6AF1B1;
+        opacity: 0;
+        animation-name: popup;
+        animation-duration: .5s;
+        animation-delay: 1s;
+        animation-timing-function: ease-in-out;
+        animation-fill-mode: both;
+      }
+
+      .advice {
+        position: relative;
+        text-align: center;
+        font-size: 28px;
+        opacity: 0;
+        animation-name: popup;
+        animation-duration: .5s;
+        animation-delay: 1.3s;
+        animation-timing-function: ease-in-out;
+        animation-fill-mode: both;
+      }
+
+      .pattern-divider {
+        opacity: 0;
+        animation-name: popup;
+        animation-duration: .5s;
+        animation-delay: 1s;
+        animation-timing-function: ease-in-out;
+        animation-fill-mode: both;
+      }
+
+      @keyframes popup {
+        from {
+          opacity: 0;
+        }
+
+        to {
+          opacity: 1;
+        }
+      }
+
+      button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        background-color: #33f098;
+        bottom: 0;
+        transform: translateY(30px);
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        border: none;
+        transition: .5s;
+      }
+
+      button:hover {
+        cursor: pointer;
+        box-shadow: 
+
+            1px 1px 10px #33f098,
+            1px 1px 10px #33f09871,
+            2px 2px 30px #33f098;
+      }
+  </style>
+</head>
+<body>
+    <div id="container">
+        <h4 class="adviceTitle"></h4>
+        <p class="advice">
+
+        </p>
+        <svg class = "pattern-divider"width="444" height="16" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path fill="#4F5D74" d="M0 8h196v1H0zM248 8h196v1H248z"/><g transform="translate(212)" fill="#CEE3E9"><rect width="6" height="16" rx="3"/><rect x="14" width="6" height="16" rx="3"/></g></g></svg>
+        <button>
+          <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg"><path d="M20 0H4a4.005 4.005 0 0 0-4 4v16a4.005 4.005 0 0 0 4 4h16a4.005 4.005 0 0 0 4-4V4a4.005 4.005 0 0 0-4-4ZM7.5 18a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3Zm0-9a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3Zm4.5 4.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3Zm4.5 4.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3Zm0-9a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3Z" fill="#202733"/></svg>
+        </button>
+    </div>
+</body>
+<script>
+    const paragraph = document.querySelector("p")
+    const adviceTitle = document.querySelector(".adviceTitle")
+    const btn = document.querySelector("button")
+
+    btn.addEventListener("click",() => location.reload())
+
+    async function getAdvise() {
+      const adviceID = Math.floor(Math.random() * 117)
+      const data = await fetch("https://api.adviceslip.com/advice/" + adviceID)
+      const advise = await data.json(data)
+
+      if (advise == undefined) console.log(advise)
+      paragraph.innerText = `"${advise.slip.advice}"`
+      adviceTitle.innerText ="Advice " + `#${advise.slip.id}`
+    }
+    window.onload = () => {
+      getAdvise()
+    }
+</script>
+</html>
